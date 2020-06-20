@@ -94,6 +94,8 @@ func (c *Command) readConfig() *Config {
 	cmdFlags.StringVar(&retryInterval, "retry-interval", "", "retry join interval")
 	cmdFlags.BoolVar(&cmdConfig.RejoinAfterLeave, "rejoin", false,
 		"enable re-joining after a previous leave")
+    cmdFlags.BoolVar(&cmdConfig.Client, "is-client", false,
+		"Whether this node is a client")
 
 	cmdFlags.BoolVar(
 		&disableCompression,
@@ -106,6 +108,8 @@ func (c *Command) readConfig() *Config {
 	if err := cmdFlags.Parse(c.args); err != nil {
 		return nil
 	}
+
+    fmt.Println("Reading config client = ", cmdConfig.Client);
 
 	cmdConfig.EnableCompression = !disableCompression
 
@@ -314,6 +318,8 @@ func (c *Command) setupAgent(config *Config, logOutput io.Writer) *Agent {
 		return nil
 	}
 
+    serfConfig.Client=config.Client
+    fmt.Println("serfConfig.Client = ", serfConfig.Client)
 	serfConfig.MemberlistConfig.BindAddr = bindIP
 	serfConfig.MemberlistConfig.BindPort = bindPort
 	serfConfig.MemberlistConfig.AdvertiseAddr = advertiseIP

@@ -37,6 +37,7 @@ func DefaultConfig() *Config {
 		QuerySizeLimit:         1024,
 		UserEventSizeLimit:     512,
 		BroadcastTimeout:       5 * time.Second,
+        Client:                 false,
 	}
 }
 
@@ -227,6 +228,8 @@ type Config struct {
 	// 5 seconds.
 	BroadcastTimeoutRaw string        `mapstructure:"broadcast_timeout"`
 	BroadcastTimeout    time.Duration `mapstructure:"-"`
+
+    Client  bool  `mapstructure:"is_client"`
 }
 
 // BindAddrParts returns the parts of the BindAddr that should be
@@ -362,6 +365,8 @@ func containsKey(keys []string, key string) bool {
 // configuration.
 func MergeConfig(a, b *Config) *Config {
 	var result Config = *a
+
+    result.Client = b.Client
 
 	// Copy the strings if they're set
 	if b.NodeName != "" {

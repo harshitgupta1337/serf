@@ -29,9 +29,6 @@ func (m *mergeDelegate) NotifyAlive(peer *memberlist.Node) error {
 
 func (m *mergeDelegate) nodeToMember(n *memberlist.Node) *Member {
 	status := StatusNone
-	if n.State == memberlist.StateLeft {
-		status = StatusLeft
-	}
 
 	return &Member{
 		Name:        n.Name,

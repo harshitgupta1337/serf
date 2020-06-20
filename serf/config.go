@@ -246,6 +246,8 @@ type Config struct {
 	// UserEventSizeLimit is maximum byte size limit of user event `name` + `payload` in bytes.
 	// It's optimal to be relatively small, since it's going to be gossiped through the cluster.
 	UserEventSizeLimit int
+
+    Client bool
 }
 
 // Init allocates the subdata structures
@@ -287,5 +289,6 @@ func DefaultConfig() *Config {
 		EnableNameConflictResolution: true,
 		DisableCoordinates:           false,
 		UserEventSizeLimit:           512,
+        Client:                       false,
 	}
 }

@@ -1,6 +1,7 @@
 package coordinate
 
 import (
+    "fmt"
 	"math"
 	"math/rand"
 	"time"
@@ -29,6 +30,9 @@ type Coordinate struct {
 	// links are usually set by bandwidth and congestion, and the core links
 	// usually follow distance based on geography.
 	Height float64
+
+    // Whether this coordinate will cause the receiving client to update their coordinate
+    Client bool
 }
 
 const (
@@ -52,11 +56,15 @@ func (e DimensionalityConflictError) Error() string {
 // NewCoordinate creates a new coordinate at the origin, using the given config
 // to supply key initial values.
 func NewCoordinate(config *Config) *Coordinate {
+    fmt.Println("CREATING NEW COORDINATE WITH isClient = %t", config.Client);
+
+
 	return &Coordinate{
 		Vec:        make([]float64, config.Dimensionality),
 		Error:      config.VivaldiErrorMax,
 		Adjustment: 0.0,
 		Height:     config.HeightMin,
+        Client:     config.Client,
 	}
 }
 
@@ -69,6 +77,7 @@ func (c *Coordinate) Clone() *Coordinate {
 		Error:      c.Error,
 		Adjustment: c.Adjustment,
 		Height:     c.Height,
+        Client:     c.Client,
 	}
 }
 

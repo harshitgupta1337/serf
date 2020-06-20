@@ -52,6 +52,8 @@ type Config struct {
 	// GravityRho is a tuning factor that sets how much gravity has an effect
 	// to try to re-center coordinates. See [2] for more details.
 	GravityRho float64
+
+    Client bool
 }
 
 // DefaultConfig returns a Config that has some default values suitable for
@@ -66,5 +68,6 @@ func DefaultConfig() *Config {
 		HeightMin:            10.0e-6,
 		LatencyFilterSize:    3,
 		GravityRho:           150.0,
+        Client:               false,
 	}
 }

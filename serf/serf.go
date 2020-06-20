@@ -302,7 +302,9 @@ func Create(conf *Config) (*Serf, error) {
 
 	// Set up network coordinate client.
 	if !conf.DisableCoordinates {
-		serf.coordClient, err = coordinate.NewClient(coordinate.DefaultConfig())
+        var coordConf = coordinate.DefaultConfig()
+        coordConf.Client = conf.Client
+		serf.coordClient, err = coordinate.NewClient(coordConf)
 		if err != nil {
 			return nil, fmt.Errorf("Failed to create coordinate client: %v", err)
 		}

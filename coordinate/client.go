@@ -52,6 +52,7 @@ type ClientStats struct {
 
 // NewClient creates a new Client and verifies the configuration is valid.
 func NewClient(config *Config) (*Client, error) {
+    fmt.Println("Creating NewClient with isClient = ", config.Client)
 	if !(config.Dimensionality > 0) {
 		return nil, fmt.Errorf("dimensionality must be >0")
 	}
@@ -202,6 +203,13 @@ func (c *Client) updateGravity() {
 func (c *Client) Update(node string, other *Coordinate, rtt time.Duration) (*Coordinate, error) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
+
+    if other.Client  == true {
+        fmt.Println("Other node is a client. Not updating coord")
+        return c.coord.Clone(), nil
+    } else {
+        fmt.Println("Other node is NOT a client. Updating coord")
+    }
 
 	if err := c.checkCoordinate(other); err != nil {
 		return nil, err
