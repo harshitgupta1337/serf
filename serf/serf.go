@@ -384,6 +384,8 @@ func Create(conf *Config) (*Serf, error) {
 	conf.MemberlistConfig.DelegateProtocolMax = ProtocolVersionMax
 	conf.MemberlistConfig.Name = conf.NodeName
 	conf.MemberlistConfig.ProtocolVersion = ProtocolVersionMap[conf.ProtocolVersion]
+    conf.MemberlistConfig.IsClient = conf.Client
+    fmt.Println("Setting IsClient = ", conf.Client)
 	if !conf.DisableCoordinates {
 		conf.MemberlistConfig.Ping = &pingDelegate{serf: serf}
 	}

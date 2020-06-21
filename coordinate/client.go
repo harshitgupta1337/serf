@@ -166,6 +166,7 @@ func (c *Client) updateVivaldi(other *Coordinate, rttSeconds float64) {
 	delta := c.config.VivaldiCC * weight
 	force := delta * (rttSeconds - dist)
 	c.coord = c.coord.ApplyForce(c.config, force, other)
+    //fmt.Printf("Initial RTT ms = %.2f ; Final RTT ms = %.2f \n", rttSeconds*1000, c.coord.DistanceTo(other).Seconds()*1000)
 }
 
 // updateAdjustment updates the adjustment portion of the client's coordinate, if
@@ -205,10 +206,10 @@ func (c *Client) Update(node string, other *Coordinate, rtt time.Duration) (*Coo
 	defer c.mutex.Unlock()
 
     if other.Client  == true {
-        fmt.Println("Other node is a client. Not updating coord")
+        //fmt.Printf("Other node %s is a client. Not updating coord\n", node)
         return c.coord.Clone(), nil
     } else {
-        fmt.Println("Other node is NOT a client. Updating coord")
+        //fmt.Printf("Other node %s is NOT a client. Updating coord\n", node)
     }
 
 	if err := c.checkCoordinate(other); err != nil {
@@ -230,6 +231,7 @@ func (c *Client) Update(node string, other *Coordinate, rtt time.Duration) (*Coo
 	}
 
 	rttSeconds := c.latencyFilter(node, rtt.Seconds())
+    //fmt.Println("RTT after applying filter = ", rttSeconds)
 	c.updateVivaldi(other, rttSeconds)
 	c.updateAdjustment(other, rttSeconds)
 	c.updateGravity()
@@ -237,6 +239,7 @@ func (c *Client) Update(node string, other *Coordinate, rtt time.Duration) (*Coo
 		c.stats.Resets++
 		c.coord = NewCoordinate(c.config)
 	}
+
 
 	return c.coord.Clone(), nil
 }
