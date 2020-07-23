@@ -1,0 +1,4 @@
+[submodule "memberlist"]
+	path = memberlist
+	url = https://github.com/harshitgupta1337/memberlist/
+	branch = cetus

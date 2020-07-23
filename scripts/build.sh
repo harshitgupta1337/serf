@@ -18,7 +18,9 @@ GIT_IMPORT=github.com/hashicorp/serf/version
 
 # Determine the arch/os combos we're building for
 XC_ARCH=${XC_ARCH:-"386 amd64 arm"}
-XC_OS=${XC_OS:-"linux darwin windows freebsd openbsd solaris"}
+XC_OS=${XC_OS:-"linux"}
+#XC_ARCH=${XC_ARCH:-"386 amd64 arm"}
+#XC_OS=${XC_OS:-"linux darwin windows freebsd openbsd solaris"}
 
 # Delete the old dir
 echo "==> Removing old directory..."
