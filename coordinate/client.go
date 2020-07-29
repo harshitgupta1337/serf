@@ -143,7 +143,7 @@ func (c *Client) latencyFilter(node string, rttSeconds float64) float64 {
 
 // updateVivialdi updates the Vivaldi portion of the client's coordinate. This
 // assumes that the mutex has been locked already.
-func (c *Client) updateVivaldi(other *Coordinate, rttSeconds float64) {
+func (c *Client) updateVivaldi(other *Coordinate, rttSeconds float64, node string) {
 	const zeroThreshold = 1.0e-6
 
 	dist := c.coord.DistanceTo(other).Seconds()
@@ -166,7 +166,7 @@ func (c *Client) updateVivaldi(other *Coordinate, rttSeconds float64) {
 	delta := c.config.VivaldiCC * weight
 	force := delta * (rttSeconds - dist)
 	c.coord = c.coord.ApplyForce(c.config, force, other)
-    //fmt.Printf("Initial RTT ms = %.2f ; Final RTT ms = %.2f \n", rttSeconds*1000, c.coord.DistanceTo(other).Seconds()*1000)
+    fmt.Printf("Node %s RTT ms = %.2f ; Init, Final distance ms = %.2f, %.2f ; Force = %.2f; self.error = %.4f; weight = %.2f; wrongness=%.2f\n", node, rttSeconds*1000, dist*1000, c.coord.DistanceTo(other).Seconds()*1000, force, c.coord.Error, weight, wrongness)
 }
 
 // updateAdjustment updates the adjustment portion of the client's coordinate, if
@@ -232,7 +232,7 @@ func (c *Client) Update(node string, other *Coordinate, rtt time.Duration) (*Coo
 
 	rttSeconds := c.latencyFilter(node, rtt.Seconds())
     //fmt.Println("RTT after applying filter = ", rttSeconds)
-	c.updateVivaldi(other, rttSeconds)
+	c.updateVivaldi(other, rttSeconds, node)
 	c.updateAdjustment(other, rttSeconds)
 	c.updateGravity()
 	if !c.coord.IsValid() {

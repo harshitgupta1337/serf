@@ -63,7 +63,7 @@ func DefaultConfig() *Config {
 		Dimensionality:       8,
 		VivaldiErrorMax:      1.5,
 		VivaldiCE:            0.25,
-		VivaldiCC:            0.95,
+		VivaldiCC:            0.5,
 		AdjustmentWindowSize: 20,
 		HeightMin:            10.0e-6,
 		LatencyFilterSize:    3,
